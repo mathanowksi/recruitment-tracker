@@ -1,6 +1,6 @@
 {
   "title": "Recruitment Tracker",
-  "updatedAt": "2026-11-19T18:48:47.150Z",
+  "updatedAt": "2026-11-19T18:50:16.556Z",
   "positions": [
     {
       "id": "pos1",
@@ -44,6 +44,19 @@
       "joiningDate": "",
       "screeningNotes": "",
       "updatedAt": "2026-11-15T09:00:00.000Z"
+    },
+    {
+      "id": "mwnwnm98d76pj",
+      "name": "Arun Mathappa",
+      "positionId": "pos1",
+      "stage": "Technical Round 1",
+      "status": "Interview Scheduled",
+      "interviewDate": "2026-11-20T12:30",
+      "rejectionReason": "",
+      "offerDate": "",
+      "joiningDate": "",
+      "screeningNotes": "Good Communication Skiils, Area of ecpertise is good",
+      "updatedAt": "2026-11-19T18:50:16.556Z"
     }
   ]
 }
