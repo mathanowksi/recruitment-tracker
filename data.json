@@ -1,6 +1,6 @@
 {
   "title": "Recruitment Tracker",
-  "updatedAt": "2026-11-19T18:52:50.589Z",
+  "updatedAt": "2026-11-19T18:53:14.077Z",
   "positions": [
     {
       "id": "pos1",
@@ -85,6 +85,19 @@
       "joiningDate": "2027-02-01",
       "screeningNotes": "",
       "updatedAt": "2026-11-19T18:50:48.924Z"
+    },
+    {
+      "id": "mwnwrf8d5cnpg",
+      "name": "hari",
+      "positionId": "mwnwqx3xwqh41",
+      "stage": "Technical Round 1",
+      "status": "Interview Scheduled",
+      "interviewDate": "2026-11-23T15:30",
+      "rejectionReason": "",
+      "offerDate": "",
+      "joiningDate": "",
+      "screeningNotes": "",
+      "updatedAt": "2026-11-19T18:53:14.077Z"
     }
   ]
 }
