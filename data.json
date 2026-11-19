@@ -1,6 +1,6 @@
 {
   "title": "Recruitment Tracker",
-  "updatedAt": "2026-11-19T18:54:29.431Z",
+  "updatedAt": "2026-11-19T18:54:51.761Z",
   "positions": [
     {
       "id": "pos1",
@@ -150,6 +150,19 @@
       "joiningDate": "",
       "screeningNotes": "",
       "updatedAt": "2026-11-19T18:54:29.431Z"
+    },
+    {
+      "id": "mwnwtiltn1zur",
+      "name": "Lavanya",
+      "positionId": "mwnwqx3xwqh41",
+      "stage": "Offer Stage",
+      "status": "Offer Released",
+      "interviewDate": "",
+      "rejectionReason": "",
+      "offerDate": "2026-11-18",
+      "joiningDate": "2026-12-14",
+      "screeningNotes": "",
+      "updatedAt": "2026-11-19T18:54:51.761Z"
     }
   ]
 }
