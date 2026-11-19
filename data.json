@@ -1,6 +1,6 @@
 {
   "title": "Recruitment Tracker",
-  "updatedAt": "2026-11-19T18:53:46.838Z",
+  "updatedAt": "2026-11-19T18:54:04.582Z",
   "positions": [
     {
       "id": "pos1",
@@ -124,6 +124,19 @@
       "joiningDate": "",
       "screeningNotes": "",
       "updatedAt": "2026-11-19T18:53:46.838Z"
+    },
+    {
+      "id": "mwnwsi7arjikw",
+      "name": "Tarun",
+      "positionId": "mwnwqx3xwqh41",
+      "stage": "Technical Round 1",
+      "status": "Interview Scheduled",
+      "interviewDate": "2026-11-23T17:00",
+      "rejectionReason": "",
+      "offerDate": "",
+      "joiningDate": "",
+      "screeningNotes": "",
+      "updatedAt": "2026-11-19T18:54:04.582Z"
     }
   ]
 }
