@@ -1,6 +1,6 @@
 {
   "title": "Recruitment Tracker",
-  "updatedAt": "2026-11-19T18:48:45.286Z",
+  "updatedAt": "2026-11-19T18:48:47.150Z",
   "positions": [
     {
       "id": "pos1",
@@ -32,19 +32,6 @@
     }
   ],
   "candidates": [
-    {
-      "id": "c1",
-      "name": "Sample Candidate A",
-      "positionId": "pos1",
-      "stage": "Offer Stage",
-      "status": "Offer Released",
-      "interviewDate": "",
-      "rejectionReason": "",
-      "offerDate": "2026-11-12",
-      "joiningDate": "2026-12-01",
-      "screeningNotes": "Strong on reconciliations and month-end close.",
-      "updatedAt": "2026-11-12T10:00:00.000Z"
-    },
     {
       "id": "c3",
       "name": "Sample Candidate C",
