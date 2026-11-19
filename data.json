@@ -1,6 +1,6 @@
 {
   "title": "Recruitment Tracker",
-  "updatedAt": "2026-11-19T18:50:48.924Z",
+  "updatedAt": "2026-11-19T18:51:09.401Z",
   "positions": [
     {
       "id": "pos1",
@@ -32,19 +32,6 @@
     }
   ],
   "candidates": [
-    {
-      "id": "c3",
-      "name": "Sample Candidate C",
-      "positionId": "pos2",
-      "stage": "HR Screening",
-      "status": "Rejected",
-      "interviewDate": "",
-      "rejectionReason": "Not a fit for the role requirements.",
-      "offerDate": "",
-      "joiningDate": "",
-      "screeningNotes": "",
-      "updatedAt": "2026-11-15T09:00:00.000Z"
-    },
     {
       "id": "mwnwnm98d76pj",
       "name": "Arun Mathappa",
