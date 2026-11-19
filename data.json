@@ -1,6 +1,6 @@
 {
   "title": "Recruitment Tracker",
-  "updatedAt": "2026-11-19T18:53:31.520Z",
+  "updatedAt": "2026-11-19T18:53:46.838Z",
   "positions": [
     {
       "id": "pos1",
@@ -111,6 +111,19 @@
       "joiningDate": "",
       "screeningNotes": "",
       "updatedAt": "2026-11-19T18:53:31.520Z"
+    },
+    {
+      "id": "mwnws4ie2sler",
+      "name": "Vijay",
+      "positionId": "mwnwqx3xwqh41",
+      "stage": "Technical Round 1",
+      "status": "Interview Scheduled",
+      "interviewDate": "2026-11-23T16:30",
+      "rejectionReason": "",
+      "offerDate": "",
+      "joiningDate": "",
+      "screeningNotes": "",
+      "updatedAt": "2026-11-19T18:53:46.838Z"
     }
   ]
 }
