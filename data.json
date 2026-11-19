@@ -1,0 +1,75 @@
+{
+  "title": "Recruitment Tracker",
+  "updatedAt": "2026-11-19T18:00:00.000Z",
+  "positions": [
+    {
+      "id": "pos1",
+      "title": "Senior Accountant",
+      "department": "Finance",
+      "hiringManager": "Sample Manager",
+      "openings": 2,
+      "openedOn": "2026-10-20",
+      "status": "Open",
+      "closedOn": "",
+      "recruiter": "Sample Recruiter",
+      "previousOwners": "Previous Recruiter",
+      "deadline": "2026-12-15",
+      "notes": ""
+    },
+    {
+      "id": "pos2",
+      "title": "Customer Support Executive",
+      "department": "Operations",
+      "hiringManager": "Sample Manager",
+      "openings": 3,
+      "openedOn": "2026-11-04",
+      "status": "Open",
+      "closedOn": "",
+      "recruiter": "Sample Recruiter",
+      "previousOwners": "",
+      "deadline": "",
+      "notes": ""
+    }
+  ],
+  "candidates": [
+    {
+      "id": "c1",
+      "name": "Sample Candidate A",
+      "positionId": "pos1",
+      "stage": "Offer Stage",
+      "status": "Offer Released",
+      "interviewDate": "",
+      "rejectionReason": "",
+      "offerDate": "2026-11-12",
+      "joiningDate": "2026-12-01",
+      "screeningNotes": "Strong on reconciliations and month-end close.",
+      "updatedAt": "2026-11-12T10:00:00.000Z"
+    },
+    {
+      "id": "c2",
+      "name": "Sample Candidate B",
+      "positionId": "pos1",
+      "stage": "Technical Round 1",
+      "status": "Interview Scheduled",
+      "interviewDate": "2026-11-21T15:00",
+      "rejectionReason": "",
+      "offerDate": "",
+      "joiningDate": "",
+      "screeningNotes": "Good communication, 5 years of experience.",
+      "updatedAt": "2026-11-18T09:00:00.000Z"
+    },
+    {
+      "id": "c3",
+      "name": "Sample Candidate C",
+      "positionId": "pos2",
+      "stage": "HR Screening",
+      "status": "Rejected",
+      "interviewDate": "",
+      "rejectionReason": "Not a fit for the role requirements.",
+      "offerDate": "",
+      "joiningDate": "",
+      "screeningNotes": "",
+      "updatedAt": "2026-11-15T09:00:00.000Z"
+    }
+  ]
+}

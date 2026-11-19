@@ -1,0 +1,681 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>Recruitment Tracker</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#f6f6f4; --surface:#ffffff; --text:#1c1c1e; --muted:#6e6e73; --faint:#a1a1a6;
+    --line:#e6e5e1; --line-strong:#d4d3ce; --accent:#1f3a5f; --accent-soft:#eef2f7;
+    --radius:10px; --shadow:0 1px 2px rgba(0,0,0,.04);
+  }
+  *{box-sizing:border-box}
+  html,body{margin:0}
+  body{font-family:Inter,-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;background:var(--bg);color:var(--text);font-size:14px;line-height:1.5;-webkit-font-smoothing:antialiased}
+  .wrap{max-width:1180px;margin:0 auto;padding:0 24px}
+  h1,h2,h3{margin:0;font-weight:600;letter-spacing:-.01em}
+  .muted{color:var(--muted)} .sm{font-size:12px}
+  .hidden{display:none !important}
+  button{font:inherit;cursor:pointer}
+
+  /* Header */
+  .top{background:var(--surface);border-bottom:1px solid var(--line)}
+  .top-inner{display:flex;justify-content:space-between;align-items:center;gap:16px;padding:22px 24px}
+  .top h1{font-size:20px}
+  .top .sub{margin:2px 0 0;color:var(--muted);font-size:13px}
+  .admin-bar{background:var(--accent);color:#fff;font-size:13px}
+  .admin-bar .wrap{display:flex;align-items:center;justify-content:space-between;gap:12px;padding-top:9px;padding-bottom:9px;flex-wrap:wrap}
+  .admin-bar .btn{background:transparent;color:#fff;border-color:rgba(255,255,255,.35)}
+  .admin-bar .btn:hover{background:rgba(255,255,255,.1)}
+  .saving-dot{display:inline-block;width:7px;height:7px;border-radius:50%;background:#9be3b5;margin-right:8px;vertical-align:1px}
+  .saving .saving-dot{background:#f4cf7a;animation:pulse 1s infinite}
+  @keyframes pulse{50%{opacity:.3}}
+
+  /* Buttons */
+  .btn{border:1px solid var(--line-strong);background:var(--surface);color:var(--text);padding:7px 13px;border-radius:8px;font-size:13px;font-weight:500;white-space:nowrap}
+  .btn:hover{background:#f3f3f1}
+  .btn.primary{background:var(--accent);border-color:var(--accent);color:#fff}
+  .btn.primary:hover{background:#18304f}
+  .btn.danger{color:#a3352b}
+  .btn:disabled{opacity:.55;cursor:default}
+  .link{background:none;border:0;padding:0;color:var(--muted);text-decoration:underline;text-underline-offset:2px;font-size:12px}
+  .icon-btn{background:none;border:0;padding:4px 6px;border-radius:6px;color:var(--muted);font-size:12px}
+  .icon-btn:hover{background:#f0f0ee;color:var(--text)}
+  .icon-btn.del:hover{color:#a3352b}
+  body:not(.is-admin) .admin-only{display:none !important}
+
+  /* Stats */
+  main.wrap{padding-top:28px;padding-bottom:40px}
+  .stats{display:grid;grid-template-columns:repeat(5,1fr);gap:12px;margin-bottom:32px}
+  .stat{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);padding:16px 18px;box-shadow:var(--shadow)}
+  .stat .label{font-size:12px;color:var(--muted)}
+  .stat .value{font-size:26px;font-weight:600;letter-spacing:-.02em;margin-top:2px}
+
+  section{margin-bottom:36px}
+  .section-head{display:flex;justify-content:space-between;align-items:flex-end;gap:12px;margin-bottom:14px;flex-wrap:wrap}
+  .section-head h2{font-size:15px}
+  .section-head .hint{font-size:12px;color:var(--muted);margin-top:2px}
+
+  /* Positions */
+  .positions{display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:14px}
+  .pos-card{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);padding:18px;box-shadow:var(--shadow);cursor:pointer;transition:border-color .15s}
+  .pos-card:hover{border-color:var(--line-strong)}
+  .pos-card.selected{border-color:var(--accent);box-shadow:0 0 0 1px var(--accent)}
+  .pos-top{display:flex;justify-content:space-between;align-items:flex-start;gap:10px}
+  .pos-top h3{font-size:15px}
+  .pos-top p{margin:2px 0 0;font-size:12px}
+  .progress{height:6px;background:#efeeea;border-radius:99px;margin:16px 0 8px;overflow:hidden}
+  .progress span{display:block;height:100%;background:var(--accent);border-radius:99px}
+  .pos-fill{font-size:13px}
+  .pos-meta{display:grid;grid-template-columns:1fr 1fr;gap:10px 16px;margin:14px 0 0;padding-top:14px;border-top:1px solid var(--line)}
+  .pos-meta dt{font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:.04em}
+  .pos-meta dd{margin:1px 0 0;font-size:13px}
+  .overdue{color:#a3352b}
+  .prev{margin:12px 0 0;font-size:12px;color:var(--muted)}
+  .card-actions{margin-top:12px;display:flex;gap:4px;justify-content:flex-end}
+
+  /* Pills */
+  .pill{display:inline-block;font-size:12px;font-weight:500;padding:2px 9px;border-radius:99px;white-space:nowrap;border:1px solid transparent}
+  .p-neutral{background:#f1f1ef;color:#55555a;border-color:#e4e4e0}
+  .p-blue{background:#eef3fa;color:#2c5282;border-color:#dbe5f2}
+  .p-green{background:#eef6f0;color:#2f6b43;border-color:#d9eadf}
+  .p-teal{background:#e9f4f3;color:#245f5a;border-color:#d2e8e5}
+  .p-amber{background:#fbf5e9;color:#8a5a12;border-color:#f0e3c6}
+  .p-red{background:#fbefee;color:#9b3a31;border-color:#f1d9d6}
+
+  /* Filters */
+  .filters{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+  .input,.select{border:1px solid var(--line-strong);background:var(--surface);border-radius:8px;padding:7px 10px;font:inherit;font-size:13px;color:var(--text);min-width:0}
+  .input:focus,.select:focus,textarea:focus{outline:2px solid var(--accent-soft);border-color:var(--accent)}
+  .filters .input{width:200px}
+  .chip{display:inline-flex;align-items:center;gap:6px;background:var(--accent-soft);color:var(--accent);border-radius:99px;padding:3px 6px 3px 10px;font-size:12px;font-weight:500}
+  .chip button{border:0;background:none;color:inherit;padding:0 4px;font-size:14px;line-height:1}
+
+  /* Candidate list */
+  .table{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);box-shadow:var(--shadow);overflow:hidden}
+  .c-row{display:grid;grid-template-columns:1.6fr 1.4fr 1.2fr 1.15fr 1fr 1.1fr 64px;gap:12px;align-items:center;padding:13px 18px}
+  .c-head{font-size:11px;text-transform:uppercase;letter-spacing:.04em;color:var(--muted);background:#fafaf8;border-bottom:1px solid var(--line);padding-top:10px;padding-bottom:10px}
+  .c-item{border-bottom:1px solid var(--line)}
+  .c-item:last-child{border-bottom:0}
+  .c-item .c-row{cursor:pointer}
+  .c-item .c-row:hover{background:#fbfbfa}
+  .c-name strong{display:block;font-weight:500}
+  .c-act{display:flex;justify-content:flex-end;align-items:center;gap:2px}
+  .chev{color:var(--faint);transition:transform .15s;font-size:11px;padding:4px}
+  .c-item.open .chev{transform:rotate(180deg)}
+  .c-details{display:none;padding:0 18px 16px;}
+  .c-item.open .c-details{display:block}
+  .c-details-inner{background:#fafaf8;border:1px solid var(--line);border-radius:8px;padding:14px 16px;display:grid;grid-template-columns:1fr 1fr;gap:14px 24px}
+  .c-details h4{margin:0 0 3px;font-size:11px;text-transform:uppercase;letter-spacing:.04em;color:var(--muted);font-weight:600}
+  .c-details p{margin:0;white-space:pre-wrap}
+  .c-details .full{grid-column:1/-1}
+  .empty{padding:36px 18px;text-align:center;color:var(--muted)}
+
+  /* Footer */
+  footer{border-top:1px solid var(--line);padding:18px 0 28px;color:var(--muted);font-size:12px}
+  footer .wrap{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap}
+
+  /* Dialog */
+  dialog{border:0;border-radius:14px;padding:0;width:min(620px,calc(100vw - 32px));box-shadow:0 20px 60px rgba(0,0,0,.18);color:var(--text)}
+  dialog::backdrop{background:rgba(20,20,22,.35)}
+  .form{padding:24px}
+  .form h3{font-size:17px;margin-bottom:4px}
+  .form .lead{margin:0 0 18px;color:var(--muted);font-size:13px}
+  .grid{display:grid;grid-template-columns:1fr 1fr;gap:14px 16px}
+  .field{display:flex;flex-direction:column;gap:5px}
+  .field.full{grid-column:1/-1}
+  .field label{font-size:12px;font-weight:500;color:#3a3a3e}
+  .field label .opt{color:var(--faint);font-weight:400}
+  .field .input,.field .select,.field textarea{width:100%}
+  textarea{border:1px solid var(--line-strong);border-radius:8px;padding:8px 10px;font:inherit;font-size:13px;resize:vertical;min-height:72px}
+  .form-actions{display:flex;justify-content:flex-end;gap:8px;margin-top:22px}
+  .form-err{color:#a3352b;font-size:13px;margin:14px 0 0}
+  .check{display:flex;align-items:center;gap:8px;font-size:13px}
+
+  /* Toast */
+  #toast{position:fixed;left:50%;bottom:24px;transform:translateX(-50%) translateY(20px);background:#1c1c1e;color:#fff;padding:10px 16px;border-radius:8px;font-size:13px;opacity:0;pointer-events:none;transition:all .2s;max-width:calc(100vw - 32px)}
+  #toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+  #toast.err{background:#9b3a31}
+  .banner{background:#fbf5e9;border:1px solid #f0e3c6;color:#6b4610;border-radius:8px;padding:10px 14px;margin-bottom:20px;font-size:13px}
+
+  /* Responsive */
+  @media (max-width:980px){ .stats{grid-template-columns:repeat(3,1fr)} }
+  @media (max-width:760px){
+    .wrap{padding:0 16px}
+    .top-inner{padding:18px 16px}
+    .stats{grid-template-columns:repeat(2,1fr)}
+    .positions{grid-template-columns:1fr}
+    .filters{width:100%} .filters .input{flex:1 1 100%;width:auto} .filters .select{flex:1}
+    .c-head{display:none}
+    .c-row{grid-template-columns:1fr 1fr;gap:10px 14px;padding:14px 16px}
+    .c-row .c-name{grid-column:1/2}
+    .c-row .c-act{grid-column:2/3;grid-row:1}
+    .c-row [data-label]::before{content:attr(data-label);display:block;font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:.04em}
+    .c-details{padding:0 16px 14px}
+    .c-details-inner,.grid{grid-template-columns:1fr}
+  }
+</style>
+</head>
+<body>
+
+<header class="top">
+  <div class="wrap top-inner" style="padding-left:24px;padding-right:24px">
+    <div>
+      <h1 id="appTitle">Recruitment Tracker</h1>
+      <p class="sub" id="lastUpdated">Loading…</p>
+    </div>
+    <button class="btn" id="refreshBtn" title="Reload latest data">Refresh</button>
+  </div>
+</header>
+
+<div class="admin-bar admin-only">
+  <div class="wrap">
+    <span id="saveState"><span class="saving-dot"></span><span id="saveText">Admin mode · changes save and go live automatically</span></span>
+    <span style="display:flex;gap:6px;flex-wrap:wrap">
+      <button class="btn" id="backupBtn">Download backup</button>
+      <button class="btn" id="exitBtn">Exit admin</button>
+      <button class="btn" id="signOutBtn">Sign out</button>
+    </span>
+  </div>
+</div>
+
+<main class="wrap">
+  <div id="banner"></div>
+  <section class="stats" id="stats"></section>
+
+  <section>
+    <div class="section-head">
+      <div><h2>Positions</h2><div class="hint">Click a position to see its candidates</div></div>
+      <button class="btn primary admin-only" id="addPosBtn">+ Add position</button>
+    </div>
+    <div class="positions" id="positions"></div>
+  </section>
+
+  <section>
+    <div class="section-head">
+      <div><h2>Candidates</h2><div class="hint">Click a candidate for screening notes and details</div></div>
+      <div class="filters">
+        <input class="input" id="search" type="search" placeholder="Search candidate…">
+        <select class="select" id="posFilter"></select>
+        <select class="select" id="statusFilter"></select>
+        <button class="btn primary admin-only" id="addCandBtn">+ Add candidate</button>
+      </div>
+    </div>
+    <div class="table" id="candidates"></div>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <span>View-only status page · refresh to see the latest updates</span>
+    <button class="link" id="adminLink">Admin sign-in</button>
+  </div>
+</footer>
+
+<dialog id="modal"></dialog>
+<div id="toast"></div>
+
+<script>
+/* ---------- Configuration ---------- */
+const DATA_FILE = 'data.json';
+
+const STATUS = {
+  'Screening':           'p-neutral',
+  'Interview Scheduled': 'p-blue',
+  'On Hold':             'p-neutral',
+  'Selected':            'p-green',
+  'Rejected':            'p-red',
+  'Offer Released':      'p-amber',
+  'Offer Declined':      'p-red',
+  'Joined':              'p-teal'
+};
+const STATUS_LIST = Object.keys(STATUS);
+const POS_STATUS = { 'Open':'p-green', 'On Hold':'p-amber', 'Closed':'p-neutral' };
+const STAGES = ['Profile Screening','HR Screening','Technical Round 1','Technical Round 2','Manager Round','HR / Final Round','Offer Stage'];
+const isActive = s => !['Rejected','Offer Declined','Joined'].includes(s);
+
+/* ---------- State ---------- */
+let data = { title:'Recruitment Tracker', updatedAt:null, positions:[], candidates:[] };
+const state = { admin:false, owner:'', repo:'', token:'', sha:null, filterPos:'', filterStatus:'', q:'', saving:0 };
+
+/* ---------- Helpers ---------- */
+const $ = s => document.querySelector(s);
+const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const uid = () => Date.now().toString(36) + Math.random().toString(36).slice(2,7);
+const pill = (text, cls) => text ? `<span class="pill ${cls||'p-neutral'}">${esc(text)}</span>` : '';
+
+function parseDate(s){
+  if(!s) return null;
+  const [d,t] = String(s).split('T');
+  const [y,m,dd] = d.split('-').map(Number);
+  if(!y || !m || !dd) return null;
+  const [h,mi] = t ? t.split(':').map(Number) : [0,0];
+  return new Date(y, m-1, dd, h||0, mi||0);
+}
+const fmtDate = s => { const d=parseDate(s); return d ? d.toLocaleDateString('en-GB',{day:'numeric',month:'short',year:'numeric'}) : ''; };
+function fmtDateTime(s){
+  const d = parseDate(s); if(!d) return '';
+  const date = d.toLocaleDateString('en-GB',{day:'numeric',month:'short'});
+  return String(s).includes('T') ? `${date}, ${d.toLocaleTimeString('en-US',{hour:'numeric',minute:'2-digit'}).toLowerCase()}` : date;
+}
+const startOfDay = d => new Date(d.getFullYear(), d.getMonth(), d.getDate());
+const daysBetween = (a,b) => Math.round((startOfDay(b) - startOfDay(a)) / 86400000);
+function today(){ const d=new Date(); return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`; }
+function fmtStamp(iso){ if(!iso) return ''; const d=new Date(iso); return isNaN(d) ? '' : d.toLocaleString('en-GB',{day:'numeric',month:'short',year:'numeric',hour:'numeric',minute:'2-digit'}); }
+
+function b64enc(str){
+  const bytes = new TextEncoder().encode(str); let bin = '';
+  for(let i=0;i<bytes.length;i+=0x8000) bin += String.fromCharCode.apply(null, bytes.subarray(i,i+0x8000));
+  return btoa(bin);
+}
+const b64dec = b64 => new TextDecoder().decode(Uint8Array.from(atob(b64.replace(/\s/g,'')), c => c.charCodeAt(0)));
+
+function toast(msg, isErr){
+  const t = $('#toast'); t.textContent = msg; t.className = 'show' + (isErr ? ' err' : '');
+  clearTimeout(toast._t); toast._t = setTimeout(() => t.className = '', isErr ? 6000 : 3200);
+}
+function normalize(d){
+  d = d || {};
+  return {
+    title: d.title || 'Recruitment Tracker',
+    updatedAt: d.updatedAt || null,
+    positions: Array.isArray(d.positions) ? d.positions : [],
+    candidates: Array.isArray(d.candidates) ? d.candidates : []
+  };
+}
+function detectRepo(){
+  const m = location.hostname.match(/^([^.]+)\.github\.io$/i);
+  if(!m) return { owner:'', repo:'' };
+  const seg = location.pathname.split('/').filter(Boolean)[0];
+  return { owner:m[1], repo: (seg && !seg.includes('.')) ? seg : `${m[1]}.github.io` };
+}
+
+/* ---------- Loading & saving ---------- */
+async function loadPublic(){
+  try{
+    const r = await fetch(`${DATA_FILE}?v=${Date.now()}`, { cache:'no-store' });
+    if(!r.ok) throw new Error(r.status);
+    data = normalize(await r.json());
+    $('#banner').innerHTML = '';
+  }catch(e){
+    $('#banner').innerHTML = `<div class="banner">Couldn't load the tracker data. If you opened this file directly from your computer, open the GitHub Pages link instead.</div>`;
+  }
+  render();
+}
+
+async function gh(method, body){
+  const r = await fetch(`https://api.github.com/repos/${encodeURIComponent(state.owner)}/${encodeURIComponent(state.repo)}/contents/${DATA_FILE}`, {
+    method, cache:'no-store',
+    headers: { 'Authorization':`Bearer ${state.token}`, 'Accept':'application/vnd.github+json', 'X-GitHub-Api-Version':'2022-11-28', ...(body ? {'Content-Type':'application/json'} : {}) },
+    body: body ? JSON.stringify(body) : undefined
+  });
+  const j = await r.json().catch(() => ({}));
+  if(!r.ok){ const e = new Error(j.message || `HTTP ${r.status}`); e.status = r.status; throw e; }
+  return j;
+}
+function friendlyError(e){
+  if(e.status === 401) return 'The access key was not accepted. It may be mistyped or expired.';
+  if(e.status === 403) return 'The access key does not have permission to change this repository. Check it has "Contents: Read and write" for this repository.';
+  if(e.status === 404) return `Couldn't find ${DATA_FILE} in ${state.owner}/${state.repo}. Check the username and repository name, and that the key has access to this repository.`;
+  return e.message || 'Something went wrong.';
+}
+async function pullFromGitHub(){
+  const j = await gh('GET');
+  state.sha = j.sha;
+  data = normalize(JSON.parse(b64dec(j.content)));
+}
+function setSaving(delta){
+  state.saving += delta;
+  const bar = $('#saveState');
+  bar.classList.toggle('saving', state.saving > 0);
+  $('#saveText').textContent = state.saving > 0 ? 'Saving…' : 'Admin mode · changes save and go live automatically';
+}
+let saveChain = Promise.resolve();
+function save(message){
+  data.updatedAt = new Date().toISOString();
+  render();
+  const snapshot = JSON.stringify(data, null, 2);
+  saveChain = saveChain.then(async () => {
+    setSaving(1);
+    const content = b64enc(snapshot);
+    try{
+      let j;
+      try{ j = await gh('PUT', { message, content, sha: state.sha }); }
+      catch(e){
+        if(e.status === 409 || e.status === 422){ const cur = await gh('GET'); state.sha = cur.sha; j = await gh('PUT', { message, content, sha: state.sha }); }
+        else throw e;
+      }
+      state.sha = j.content.sha;
+      toast('Saved. Viewers will see it within a minute or two.');
+    }catch(e){
+      toast(`Not saved: ${friendlyError(e)}`, true);
+    }finally{ setSaving(-1); }
+  });
+  return saveChain;
+}
+
+/* ---------- Admin access ---------- */
+function getStoredAuth(){
+  try{ return JSON.parse(localStorage.getItem('rt_auth') || sessionStorage.getItem('rt_auth') || 'null'); }catch(e){ return null; }
+}
+async function enterAdmin(auth, remember){
+  state.owner = auth.owner.trim(); state.repo = auth.repo.trim(); state.token = auth.token.trim();
+  await pullFromGitHub();
+  if(remember !== undefined){
+    localStorage.removeItem('rt_auth'); sessionStorage.removeItem('rt_auth');
+    (remember ? localStorage : sessionStorage).setItem('rt_auth', JSON.stringify({ owner:state.owner, repo:state.repo, token:state.token }));
+  }
+  state.admin = true; document.body.classList.add('is-admin');
+  render();
+}
+function exitAdmin(){
+  state.admin = false; state.token = ''; document.body.classList.remove('is-admin');
+  loadPublic();
+}
+async function openAdmin(){
+  const stored = getStoredAuth();
+  if(stored && stored.token){
+    try{ await enterAdmin(stored); toast('Admin mode on'); return; }
+    catch(e){ toast(friendlyError(e), true); }
+  }
+  const det = detectRepo();
+  const dlg = $('#modal');
+  dlg.innerHTML = `
+    <form class="form" id="authForm">
+      <h3>Admin sign-in</h3>
+      <p class="lead">Paste your GitHub access key to add, edit or delete entries. Viewers never need this.</p>
+      <div class="grid">
+        <div class="field"><label>GitHub username</label><input class="input" name="owner" required value="${esc(stored?.owner || det.owner)}"></div>
+        <div class="field"><label>Repository name</label><input class="input" name="repo" required value="${esc(stored?.repo || det.repo)}"></div>
+        <div class="field full"><label>Access key (token)</label><input class="input" name="token" type="password" required autocomplete="off" placeholder="github_pat_…"></div>
+        <label class="check full"><input type="checkbox" name="remember" checked> Remember on this device</label>
+      </div>
+      <p class="form-err" hidden></p>
+      <div class="form-actions"><button type="button" class="btn" data-close>Cancel</button><button class="btn primary" type="submit">Unlock</button></div>
+    </form>`;
+  dlg.querySelector('[data-close]').onclick = () => dlg.close();
+  dlg.querySelector('form').onsubmit = async ev => {
+    ev.preventDefault();
+    const f = ev.target, err = f.querySelector('.form-err'), btn = f.querySelector('[type=submit]');
+    btn.disabled = true; btn.textContent = 'Checking…'; err.hidden = true;
+    try{
+      await enterAdmin({ owner:f.owner.value, repo:f.repo.value, token:f.token.value }, f.remember.checked);
+      dlg.close(); toast('Admin mode on');
+    }catch(e){ err.textContent = friendlyError(e); err.hidden = false; }
+    finally{ btn.disabled = false; btn.textContent = 'Unlock'; }
+  };
+  dlg.showModal();
+}
+
+/* ---------- Forms ---------- */
+function fieldHtml(f, v){
+  const val = v ?? f.def ?? '';
+  const label = `<label for="f_${f.k}">${esc(f.label)}${f.req ? '' : ' <span class="opt">(optional)</span>'}</label>`;
+  const req = f.req ? 'required' : '';
+  let input;
+  if(f.type === 'select'){
+    input = `<select class="select" id="f_${f.k}" name="${f.k}" ${req}>${f.placeholder ? `<option value="">${esc(f.placeholder)}</option>` : ''}${f.options.map(o => {
+      const [ov, ol] = Array.isArray(o) ? o : [o, o];
+      return `<option value="${esc(ov)}" ${String(ov) === String(val) ? 'selected' : ''}>${esc(ol)}</option>`;
+    }).join('')}</select>`;
+  } else if(f.type === 'textarea'){
+    input = `<textarea id="f_${f.k}" name="${f.k}" ${req} placeholder="${esc(f.ph||'')}">${esc(val)}</textarea>`;
+  } else {
+    const list = f.list ? `list="dl_${f.k}"` : '';
+    input = `<input class="input" id="f_${f.k}" name="${f.k}" type="${f.type||'text'}" ${req} ${f.min!=null ? `min="${f.min}"` : ''} ${list} value="${esc(val)}" placeholder="${esc(f.ph||'')}">` +
+            (f.list ? `<datalist id="dl_${f.k}">${f.list.map(o => `<option value="${esc(o)}">`).join('')}</datalist>` : '');
+  }
+  const when = f.when ? `data-when-k="${f.when.k}" data-when-in="${esc(f.when.in.join('|'))}"` : '';
+  return `<div class="field ${f.full ? 'full' : ''}" ${when}>${label}${input}</div>`;
+}
+function openForm(title, lead, fields, values, onSubmit){
+  const dlg = $('#modal');
+  dlg.innerHTML = `<form class="form" novalidate>
+      <h3>${esc(title)}</h3>${lead ? `<p class="lead">${esc(lead)}</p>` : '<div style="height:14px"></div>'}
+      <div class="grid">${fields.map(f => fieldHtml(f, values[f.k])).join('')}</div>
+      <p class="form-err" hidden></p>
+      <div class="form-actions"><button type="button" class="btn" data-close>Cancel</button><button class="btn primary" type="submit">Save</button></div>
+    </form>`;
+  const form = dlg.querySelector('form');
+  const applyWhen = () => form.querySelectorAll('[data-when-k]').forEach(el => {
+    const cur = form.elements[el.dataset.whenK]?.value || '';
+    el.style.display = el.dataset.whenIn.split('|').includes(cur) ? '' : 'none';
+  });
+  form.addEventListener('change', applyWhen); applyWhen();
+  dlg.querySelector('[data-close]').onclick = () => dlg.close();
+  form.onsubmit = ev => {
+    ev.preventDefault();
+    const err = form.querySelector('.form-err');
+    const missing = fields.filter(f => f.req && !String(form.elements[f.k].value).trim()).map(f => f.label);
+    if(missing.length){ err.textContent = `Please fill in: ${missing.join(', ')}`; err.hidden = false; return; }
+    const out = {};
+    fields.forEach(f => {
+      let v = form.elements[f.k].value.trim();
+      if(f.type === 'number') v = v === '' ? 0 : Math.max(0, parseInt(v, 10) || 0);
+      const wrap = form.elements[f.k].closest('.field');
+      if(wrap.style.display === 'none') v = (f.type === 'number') ? 0 : '';
+      out[f.k] = v;
+    });
+    dlg.close(); onSubmit(out);
+  };
+  dlg.showModal();
+  setTimeout(() => form.querySelector('input,select,textarea')?.focus(), 30);
+}
+
+const POSITION_FIELDS = () => [
+  { k:'title', label:'Role / position title', req:true, full:true, ph:'e.g. Senior Accountant' },
+  { k:'department', label:'Department', ph:'e.g. Finance' },
+  { k:'hiringManager', label:'Hiring manager', ph:'Name' },
+  { k:'openings', label:'Total openings', type:'number', min:1, req:true, def:1 },
+  { k:'openedOn', label:'Requisition opened on', type:'date', req:true, def:today() },
+  { k:'status', label:'Position status', type:'select', options:Object.keys(POS_STATUS), req:true, def:'Open' },
+  { k:'closedOn', label:'Closed on', type:'date', when:{ k:'status', in:['Closed'] } },
+  { k:'recruiter', label:'Current recruiter', ph:'Who owns this now' },
+  { k:'previousOwners', label:'Previously handled by', ph:'Earlier recruiter(s), if any' },
+  { k:'deadline', label:'Deadline', type:'date' },
+  { k:'notes', label:'Notes', type:'textarea', full:true }
+];
+const CANDIDATE_FIELDS = () => [
+  { k:'name', label:'Candidate name', req:true, ph:'Full name' },
+  { k:'positionId', label:'Position', type:'select', req:true, placeholder:'Select…', options:data.positions.map(p => [p.id, p.title]) },
+  { k:'stage', label:'Current stage / round', list:STAGES, ph:'e.g. Technical Round 1' },
+  { k:'status', label:'Status', type:'select', options:STATUS_LIST, req:true, def:'Screening' },
+  { k:'interviewDate', label:'Interview date & time', type:'datetime-local', when:{ k:'status', in:['Screening','Interview Scheduled','On Hold','Selected'] } },
+  { k:'rejectionReason', label:'Rejection / decline reason', type:'textarea', full:true, when:{ k:'status', in:['Rejected','Offer Declined'] } },
+  { k:'offerDate', label:'Offer letter released on', type:'date', when:{ k:'status', in:['Offer Released','Offer Declined','Joined'] } },
+  { k:'joiningDate', label:'Date of joining', type:'date', when:{ k:'status', in:['Offer Released','Joined'] } },
+  { k:'screeningNotes', label:'Screening notes', type:'textarea', full:true, ph:'Key observations from screening / interviews' }
+];
+
+function editPosition(id){
+  const p = id ? data.positions.find(x => x.id === id) : {};
+  openForm(id ? 'Edit position' : 'Add position', '', POSITION_FIELDS(), p || {}, vals => {
+    if(id){ Object.assign(p, vals); save(`Update position: ${vals.title}`); }
+    else { data.positions.push({ id:uid(), ...vals }); save(`Add position: ${vals.title}`); }
+  });
+}
+function deletePosition(id){
+  const p = data.positions.find(x => x.id === id); if(!p) return;
+  const n = data.candidates.filter(c => c.positionId === id).length;
+  if(!confirm(`Delete "${p.title}"${n ? ` and its ${n} candidate${n>1?'s':''}` : ''}? This cannot be undone from here.`)) return;
+  data.positions = data.positions.filter(x => x.id !== id);
+  data.candidates = data.candidates.filter(c => c.positionId !== id);
+  if(state.filterPos === id) state.filterPos = '';
+  save(`Delete position: ${p.title}`);
+}
+function editCandidate(id){
+  if(!data.positions.length){ toast('Add a position first', true); return; }
+  const c = id ? data.candidates.find(x => x.id === id) : { positionId: state.filterPos || '' };
+  openForm(id ? 'Edit candidate' : 'Add candidate', '', CANDIDATE_FIELDS(), c || {}, vals => {
+    vals.updatedAt = new Date().toISOString();
+    if(id){ Object.assign(c, vals); save(`Update candidate: ${vals.name}`); }
+    else { data.candidates.push({ id:uid(), ...vals }); save(`Add candidate: ${vals.name}`); }
+  });
+}
+function deleteCandidate(id){
+  const c = data.candidates.find(x => x.id === id); if(!c) return;
+  if(!confirm(`Delete candidate "${c.name}"?`)) return;
+  data.candidates = data.candidates.filter(x => x.id !== id);
+  save(`Delete candidate: ${c.name}`);
+}
+
+/* ---------- Rendering ---------- */
+function posStats(p){
+  const cs = data.candidates.filter(c => c.positionId === p.id);
+  return {
+    total: cs.length,
+    joined: cs.filter(c => c.status === 'Joined').length,
+    offers: cs.filter(c => c.status === 'Offer Released').length,
+    active: cs.filter(c => isActive(c.status)).length
+  };
+}
+function renderStats(){
+  const open = data.positions.filter(p => p.status !== 'Closed');
+  const totalOpenings = data.positions.reduce((s,p) => s + (Number(p.openings)||0), 0);
+  const filled = data.candidates.filter(c => c.status === 'Joined').length;
+  const offers = data.candidates.filter(c => c.status === 'Offer Released').length;
+  const active = data.candidates.filter(c => isActive(c.status)).length;
+  const tiles = [['Open positions', open.length], ['Total openings', totalOpenings], ['Filled (joined)', filled], ['Offers released', offers], ['Candidates in process', active]];
+  $('#stats').innerHTML = tiles.map(([l,v]) => `<div class="stat"><div class="label">${l}</div><div class="value">${v}</div></div>`).join('');
+}
+function renderPositions(){
+  const el = $('#positions');
+  if(!data.positions.length){
+    el.innerHTML = `<div class="table empty" style="grid-column:1/-1">No positions yet.${state.admin ? ' Click “+ Add position” to create one.' : ''}</div>`;
+    return;
+  }
+  const order = { 'Open':0, 'On Hold':1, 'Closed':2 };
+  const list = [...data.positions].sort((a,b) => (order[a.status]??0) - (order[b.status]??0) || String(a.openedOn).localeCompare(String(b.openedOn)));
+  const now = new Date();
+  el.innerHTML = list.map(p => {
+    const s = posStats(p), openings = Number(p.openings)||0;
+    const pct = openings ? Math.min(100, Math.round(s.joined / openings * 100)) : 0;
+    const opened = parseDate(p.openedOn);
+    const endDate = p.status === 'Closed' && parseDate(p.closedOn) ? parseDate(p.closedOn) : now;
+    const days = opened ? Math.max(0, daysBetween(opened, endDate)) : null;
+    let deadline = '—';
+    if(p.deadline){
+      const dd = daysBetween(now, parseDate(p.deadline));
+      deadline = fmtDate(p.deadline) + (p.status === 'Closed' ? '' :
+        dd < 0 ? ` <span class="overdue">· ${-dd}d overdue</span>` : dd === 0 ? ' <span class="overdue">· today</span>' : ` <span class="muted">· in ${dd}d</span>`);
+    }
+    const sub = [p.department, p.hiringManager ? `HM: ${p.hiringManager}` : ''].filter(Boolean).map(esc).join(' · ');
+    return `<article class="pos-card ${state.filterPos === p.id ? 'selected' : ''}" data-pos="${esc(p.id)}">
+      <div class="pos-top"><div><h3>${esc(p.title)}</h3>${sub ? `<p class="muted">${sub}</p>` : ''}</div>${pill(p.status || 'Open', POS_STATUS[p.status] || 'p-green')}</div>
+      <div class="progress"><span style="width:${pct}%"></span></div>
+      <div class="pos-fill"><strong>${s.joined}</strong> of ${openings} filled${s.offers ? ` <span class="muted">· ${s.offers} offer${s.offers>1?'s':''} out</span>` : ''}</div>
+      <dl class="pos-meta">
+        <div><dt>${p.status === 'Closed' ? 'Days taken' : 'Days open'}</dt><dd>${days ?? '—'}${opened ? ` <span class="muted sm">since ${fmtDate(p.openedOn)}</span>` : ''}</dd></div>
+        <div><dt>Candidates</dt><dd>${s.total}${s.total ? ` <span class="muted sm">(${s.active} active)</span>` : ''}</dd></div>
+        <div><dt>Recruiter</dt><dd>${esc(p.recruiter) || '—'}</dd></div>
+        <div><dt>Deadline</dt><dd>${deadline}</dd></div>
+      </dl>
+      ${p.previousOwners ? `<p class="prev">Previously handled by: ${esc(p.previousOwners)}</p>` : ''}
+      ${p.notes ? `<p class="prev">${esc(p.notes)}</p>` : ''}
+      <div class="card-actions admin-only"><button class="icon-btn" data-edit-pos="${esc(p.id)}">Edit</button><button class="icon-btn del" data-del-pos="${esc(p.id)}">Delete</button></div>
+    </article>`;
+  }).join('');
+}
+function renderFilters(){
+  const pf = $('#posFilter'), sf = $('#statusFilter');
+  pf.innerHTML = `<option value="">All positions</option>` + data.positions.map(p => `<option value="${esc(p.id)}" ${state.filterPos === p.id ? 'selected' : ''}>${esc(p.title)}</option>`).join('');
+  sf.innerHTML = `<option value="">All statuses</option>` + STATUS_LIST.map(s => `<option ${state.filterStatus === s ? 'selected' : ''}>${s}</option>`).join('');
+}
+function renderCandidates(){
+  const posName = id => data.positions.find(p => p.id === id)?.title || '—';
+  const q = state.q.toLowerCase();
+  const list = data.candidates
+    .filter(c => !state.filterPos || c.positionId === state.filterPos)
+    .filter(c => !state.filterStatus || c.status === state.filterStatus)
+    .filter(c => !q || [c.name, c.stage, posName(c.positionId)].join(' ').toLowerCase().includes(q))
+    .sort((a,b) => String(b.updatedAt||'').localeCompare(String(a.updatedAt||'')));
+
+  const head = `<div class="c-row c-head"><div>Candidate</div><div>Position</div><div>Stage</div><div>Status</div><div>Interview</div><div>Offer / Joining</div><div></div></div>`;
+  if(!list.length){
+    const none = data.candidates.length ? 'No candidates match these filters.' : `No candidates yet.${state.admin ? ' Click “+ Add candidate” to add one.' : ''}`;
+    $('#candidates').innerHTML = head + `<div class="empty">${none}</div>`;
+    return;
+  }
+  $('#candidates').innerHTML = head + list.map(c => {
+    const offer = [c.offerDate ? `Offer: ${fmtDate(c.offerDate)}` : '', c.joiningDate ? `<strong style="font-weight:500">${c.status === 'Joined' ? 'Joined' : 'Joins'}: ${fmtDate(c.joiningDate)}</strong>` : ''].filter(Boolean).join('<br>') || '<span class="muted">—</span>';
+    const showInterview = c.interviewDate && !['Rejected','Offer Declined','Offer Released','Joined'].includes(c.status);
+    const details = [
+      `<div class="full"><h4>Screening notes</h4><p>${esc(c.screeningNotes) || '<span class="muted">No notes added</span>'}</p></div>`,
+      (['Rejected','Offer Declined'].includes(c.status)) ? `<div class="full"><h4>${c.status === 'Rejected' ? 'Rejection reason' : 'Decline reason'}</h4><p>${esc(c.rejectionReason) || '<span class="muted">Not specified</span>'}</p></div>` : '',
+      c.interviewDate ? `<div><h4>Interview</h4><p>${fmtDateTime(c.interviewDate)}</p></div>` : '',
+      `<div><h4>Last updated</h4><p>${fmtStamp(c.updatedAt) || '—'}</p></div>`
+    ].join('');
+    return `<div class="c-item" data-id="${esc(c.id)}">
+      <div class="c-row">
+        <div class="c-name"><strong>${esc(c.name)}</strong></div>
+        <div data-label="Position">${esc(posName(c.positionId))}</div>
+        <div data-label="Stage">${esc(c.stage) || '<span class="muted">—</span>'}</div>
+        <div data-label="Status">${pill(c.status, STATUS[c.status])}</div>
+        <div data-label="Interview">${showInterview ? fmtDateTime(c.interviewDate) : '<span class="muted">—</span>'}</div>
+        <div data-label="Offer / Joining">${offer}</div>
+        <div class="c-act">
+          <button class="icon-btn admin-only" data-edit-cand="${esc(c.id)}" title="Edit">Edit</button>
+          <button class="icon-btn del admin-only" data-del-cand="${esc(c.id)}" title="Delete">✕</button>
+          <span class="chev">▼</span>
+        </div>
+      </div>
+      <div class="c-details"><div class="c-details-inner">${details}</div></div>
+    </div>`;
+  }).join('');
+}
+function render(){
+  document.title = data.title;
+  $('#appTitle').textContent = data.title;
+  $('#lastUpdated').textContent = data.updatedAt ? `Last updated ${fmtStamp(data.updatedAt)}` : 'No updates yet';
+  if(state.filterPos && !data.positions.some(p => p.id === state.filterPos)) state.filterPos = '';
+  renderStats(); renderPositions(); renderFilters(); renderCandidates();
+}
+
+/* ---------- Events ---------- */
+document.addEventListener('click', e => {
+  const t = e.target.closest('button, .pos-card, .c-row');
+  if(!t) return;
+  if(t.dataset.editPos){ e.stopPropagation(); return editPosition(t.dataset.editPos); }
+  if(t.dataset.delPos){ e.stopPropagation(); return deletePosition(t.dataset.delPos); }
+  if(t.dataset.editCand){ e.stopPropagation(); return editCandidate(t.dataset.editCand); }
+  if(t.dataset.delCand){ e.stopPropagation(); return deleteCandidate(t.dataset.delCand); }
+  if(t.classList.contains('pos-card')){
+    state.filterPos = state.filterPos === t.dataset.pos ? '' : t.dataset.pos;
+    render();
+    if(state.filterPos) document.querySelector('#candidates').scrollIntoView({ behavior:'smooth', block:'start' });
+    return;
+  }
+  if(t.classList.contains('c-row') && !t.classList.contains('c-head')) t.parentElement.classList.toggle('open');
+});
+$('#search').addEventListener('input', e => { state.q = e.target.value; renderCandidates(); });
+$('#posFilter').addEventListener('change', e => { state.filterPos = e.target.value; renderPositions(); renderCandidates(); });
+$('#statusFilter').addEventListener('change', e => { state.filterStatus = e.target.value; renderCandidates(); });
+$('#addPosBtn').onclick = () => editPosition(null);
+$('#addCandBtn').onclick = () => editCandidate(null);
+$('#adminLink').onclick = openAdmin;
+$('#exitBtn').onclick = () => { exitAdmin(); toast('Admin mode off'); };
+$('#signOutBtn').onclick = () => {
+  if(!confirm('Sign out and remove the saved access key from this device?')) return;
+  localStorage.removeItem('rt_auth'); sessionStorage.removeItem('rt_auth'); exitAdmin(); toast('Signed out');
+};
+$('#refreshBtn').onclick = async () => {
+  if(state.admin){ try{ await pullFromGitHub(); render(); toast('Up to date'); }catch(e){ toast(friendlyError(e), true); } }
+  else { await loadPublic(); toast('Up to date'); }
+};
+$('#backupBtn').onclick = () => {
+  const blob = new Blob([JSON.stringify(data, null, 2)], { type:'application/json' });
+  const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = `recruitment-backup-${today()}.json`; a.click();
+  setTimeout(() => URL.revokeObjectURL(a.href), 1000);
+};
+window.addEventListener('beforeunload', e => { if(state.saving > 0){ e.preventDefault(); e.returnValue = ''; } });
+
+loadPublic();
+if(location.hash === '#admin') openAdmin();
+</script>
+</body>
+</html>
