@@ -1,6 +1,6 @@
 {
   "title": "Recruitment Tracker",
-  "updatedAt": "2026-11-19T18:00:00.000Z",
+  "updatedAt": "2026-11-19T18:48:45.286Z",
   "positions": [
     {
       "id": "pos1",
@@ -44,19 +44,6 @@
       "joiningDate": "2026-12-01",
       "screeningNotes": "Strong on reconciliations and month-end close.",
       "updatedAt": "2026-11-12T10:00:00.000Z"
-    },
-    {
-      "id": "c2",
-      "name": "Sample Candidate B",
-      "positionId": "pos1",
-      "stage": "Technical Round 1",
-      "status": "Interview Scheduled",
-      "interviewDate": "2026-11-21T15:00",
-      "rejectionReason": "",
-      "offerDate": "",
-      "joiningDate": "",
-      "screeningNotes": "Good communication, 5 years of experience.",
-      "updatedAt": "2026-11-18T09:00:00.000Z"
     },
     {
       "id": "c3",
