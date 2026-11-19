@@ -1,6 +1,6 @@
 {
   "title": "Recruitment Tracker",
-  "updatedAt": "2026-11-19T18:53:14.077Z",
+  "updatedAt": "2026-11-19T18:53:31.520Z",
   "positions": [
     {
       "id": "pos1",
@@ -98,6 +98,19 @@
       "joiningDate": "",
       "screeningNotes": "",
       "updatedAt": "2026-11-19T18:53:14.077Z"
+    },
+    {
+      "id": "mwnwrsowhcu2a",
+      "name": "Varun",
+      "positionId": "mwnwqx3xwqh41",
+      "stage": "Technical Round 1",
+      "status": "Interview Scheduled",
+      "interviewDate": "2026-11-23T16:01",
+      "rejectionReason": "",
+      "offerDate": "",
+      "joiningDate": "",
+      "screeningNotes": "",
+      "updatedAt": "2026-11-19T18:53:31.520Z"
     }
   ]
 }
