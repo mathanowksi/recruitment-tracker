@@ -1,6 +1,6 @@
 {
   "title": "Recruitment Tracker",
-  "updatedAt": "2026-11-19T18:51:09.401Z",
+  "updatedAt": "2026-11-19T18:51:59.228Z",
   "positions": [
     {
       "id": "pos1",
@@ -28,6 +28,20 @@
       "recruiter": "Sample Recruiter",
       "previousOwners": "",
       "deadline": "",
+      "notes": ""
+    },
+    {
+      "id": "mwnwpth8u8ble",
+      "title": "Software Engineer III",
+      "department": "PD&IT",
+      "hiringManager": "Deb",
+      "openings": 1,
+      "openedOn": "2026-11-20",
+      "status": "Open",
+      "closedOn": "",
+      "recruiter": "Grashwel Abraham",
+      "previousOwners": "",
+      "deadline": "2027-02-20",
       "notes": ""
     }
   ],
