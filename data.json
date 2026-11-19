@@ -1,6 +1,6 @@
 {
   "title": "Recruitment Tracker",
-  "updatedAt": "2026-11-19T18:50:16.556Z",
+  "updatedAt": "2026-11-19T18:50:48.924Z",
   "positions": [
     {
       "id": "pos1",
@@ -57,6 +57,19 @@
       "joiningDate": "",
       "screeningNotes": "Good Communication Skiils, Area of ecpertise is good",
       "updatedAt": "2026-11-19T18:50:16.556Z"
+    },
+    {
+      "id": "mwnwob8cyihqs",
+      "name": "Grashwel Abraham",
+      "positionId": "pos2",
+      "stage": "Technical Round 2",
+      "status": "Offer Released",
+      "interviewDate": "",
+      "rejectionReason": "",
+      "offerDate": "2026-11-19",
+      "joiningDate": "2027-02-01",
+      "screeningNotes": "",
+      "updatedAt": "2026-11-19T18:50:48.924Z"
     }
   ]
 }
