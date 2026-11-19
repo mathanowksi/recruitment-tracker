@@ -1,6 +1,6 @@
 {
   "title": "Recruitment Tracker",
-  "updatedAt": "2026-11-19T18:54:04.582Z",
+  "updatedAt": "2026-11-19T18:54:29.431Z",
   "positions": [
     {
       "id": "pos1",
@@ -137,6 +137,19 @@
       "joiningDate": "",
       "screeningNotes": "",
       "updatedAt": "2026-11-19T18:54:04.582Z"
+    },
+    {
+      "id": "mwnwt1djj4wmz",
+      "name": "Vinay",
+      "positionId": "mwnwqx3xwqh41",
+      "stage": "Manager Round",
+      "status": "Interview Scheduled",
+      "interviewDate": "2026-11-23T19:30",
+      "rejectionReason": "",
+      "offerDate": "",
+      "joiningDate": "",
+      "screeningNotes": "",
+      "updatedAt": "2026-11-19T18:54:29.431Z"
     }
   ]
 }
